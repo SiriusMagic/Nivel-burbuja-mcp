@@ -1,0 +1,7 @@
+<!-- Nivel: a lime bubble level (a vial with its bubble centred between two marks). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#C6F135" android:pathData="M38,44h32a10,10 0,0 1,0 20h-32a10,10 0,0 1,0 -20zM38,48a6,6 0,0 0,0 12h32a6,6 0,0 0,0 -12z" />
+    <path android:fillColor="#C6F135" android:pathData="M46,50h16a4,4 0,0 1,0 8h-16a4,4 0,0 1,0 -8z" />
+    <path android:fillColor="#C6F135" android:pathData="M42,38h3v32h-3zM63,38h3v32h-3z" />
+</vector>
