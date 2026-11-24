@@ -103,4 +103,11 @@
     <string name="privacy_text">Nivel no tiene anuncios ni estadísticas. Tus ajustes y mediciones se guardan solo en este teléfono, fuera de las copias en la nube. La cámara solo se usa para dibujar el horizonte y no guarda imágenes. Solo si activas el Modo MCP, la IA que conectes con un token puede leer la inclinación, la calibración y tus mediciones a través del relay.</string>
     <string name="about">Acerca de</string>
     <string name="version">Versión %1$s</string>
+    <string name="icon_title">Icono de la app</string>
+    <string name="icon_original">Original</string>
+    <string name="icon_light">Claro</string>
+    <string name="icon_gold">Dorado</string>
+    <string name="icon_blue">Azul</string>
+    <string name="icon_green">Verde</string>
+    <string name="icon_hint">Cambia el icono de la pantalla de inicio. Algunos lanzadores tardan unos segundos en mostrarlo.</string>
 </resources>

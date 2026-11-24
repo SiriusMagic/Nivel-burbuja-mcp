@@ -1,5 +1,7 @@
 package com.zirakusa.nivel.ui.screens
 
+import com.zirakusa.nivel.IconCard
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -54,6 +56,7 @@ import com.zirakusa.nivel.ui.theme.LevelColors
                     Modifier.fillMaxWidth()) { state.changeUnit(SlopeUnit.entries[it]) }
             }
         }
+        IconCard(LevelColors.Card, LevelColors.Text, LevelColors.Muted, LevelColors.Accent, androidx.compose.ui.graphics.Color(0xFF0D1828))
         ThemeCard(state.themeMode, state.accent, state::changeTheme, state::changeAccent)
         Group {
             Item(stringResource(R.string.measurements), state.measurements.size.toString()) { state.page = Page.MEASUREMENTS }

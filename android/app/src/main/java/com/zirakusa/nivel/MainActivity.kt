@@ -42,6 +42,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppIcon.load(this)
         enableEdgeToEdge()
         state = LevelState(SharedValues(this), onLevel = { beeper.beep() })
         torch = Torch(this)
