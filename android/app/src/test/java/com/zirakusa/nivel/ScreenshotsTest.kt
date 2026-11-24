@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -110,7 +111,7 @@ class ScreenshotsTest {
         state.tab = Tab.SETTINGS
         compose.onNodeWithText("Restablecer calibración").assertExists()
         shot("settings")
-        compose.onNodeWithText("Modo MCP").performClick()
+        compose.onNodeWithText("Modo MCP").performScrollTo().performClick()
         compose.onNodeWithText("Redireccionar a Hub").assertExists()
         shot("mcp")
     }
@@ -121,8 +122,8 @@ class ScreenshotsTest {
         lean(-4.0, 2.5)
         shot("level-light")
         state.tab = Tab.SETTINGS
-        compose.onNodeWithText("Negro").performClick()
-        compose.onNodeWithContentDescription("Lima").performClick()
+        compose.onNodeWithText("Negro").performScrollTo().performClick()
+        compose.onNodeWithContentDescription("Lima").performScrollTo().performClick()
         assertEquals(ThemeMode.BLACK, state.themeMode); assertEquals(Accent.LIMA, state.accent)
         shot("settings-black")
         state.tab = Tab.LEVEL
