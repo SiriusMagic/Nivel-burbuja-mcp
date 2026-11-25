@@ -24,7 +24,7 @@ import com.zirakusa.nivel.ui.theme.ThemeMode
 enum class Tab { LEVEL, PLUMB, INCLINE, RULER, CAMERA, SETTINGS }
 
 /** Pages over the tabs. */
-enum class Page { MAIN, MCP, MEASUREMENTS }
+enum class Page { MAIN, MEASUREMENTS }
 
 /**
  * The only owner of what the screens show: the smoothed gravity (in screen axes) and everything measured from it, the

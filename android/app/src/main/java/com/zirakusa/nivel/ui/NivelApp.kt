@@ -35,7 +35,6 @@ import com.zirakusa.nivel.R
 import com.zirakusa.nivel.ui.screens.CameraScreen
 import com.zirakusa.nivel.ui.screens.InclineScreen
 import com.zirakusa.nivel.ui.screens.LevelScreen
-import com.zirakusa.nivel.ui.screens.McpScreen
 import com.zirakusa.nivel.ui.screens.MeasurementsScreen
 import com.zirakusa.nivel.ui.screens.PlumbScreen
 import com.zirakusa.nivel.ui.screens.RulerScreen
@@ -49,13 +48,12 @@ class AppActions(
     val askCamera: () -> Unit = {},
     val toast: (Int) -> Unit = {},
     val copy: (String) -> Unit = {},
-    val goToHub: () -> Unit = {},
+    val openArka: () -> Unit = {},
 )
 
 /** The whole app: one tab with the bottom bar, or a page over it (Modo MCP, Mediciones guardadas). */
 @Composable fun NivelApp(state: LevelState, actions: AppActions = AppActions(), preview: @Composable (Modifier) -> Unit = {}) {
     when (state.page) {
-        Page.MCP -> return McpScreen(actions.copy, actions.goToHub) { state.page = Page.MAIN }
         Page.MEASUREMENTS -> return MeasurementsScreen(state.measurements, state::delete,
             onStart = { state.page = Page.MAIN; state.tab = Tab.LEVEL }) { state.page = Page.MAIN }
         Page.MAIN -> Unit

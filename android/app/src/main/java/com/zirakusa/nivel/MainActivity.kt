@@ -1,8 +1,6 @@
 package com.zirakusa.nivel
 
 import android.Manifest
-import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -49,7 +47,7 @@ class MainActivity : ComponentActivity() {
         @Suppress("DEPRECATION") // display is API 30+; the window manager's default display works on every version.
         sensor = TiltSensor(this, { windowManager.defaultDisplay.rotation }) { x, y, z, r -> runOnUiThread { state.onGravity(x, y, z, r) } }
         McpMode.load(this)
-        val actions = AppActions(hasFlash = torch.available, torch = ::setTorch, askCamera = ::askCamera, toast = ::toast, copy = ::copy, goToHub = ::goToHub)
+        val actions = AppActions(hasFlash = torch.available, torch = ::setTorch, askCamera = ::askCamera, toast = ::toast, openArka = ::openArka)
         setContent {
             LevelTheme(state.themeMode, state.accent) {
                 val light = LevelColors.isLight && state.tab != Tab.CAMERA
@@ -92,15 +90,9 @@ class MainActivity : ComponentActivity() {
 
     private fun toast(text: Int) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
-    private fun copy(link: String) {
-        getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText("Nivel MCP", link))
-        toast(R.string.copied)
-    }
-
-    /** «Ir al Hub»: copies the hub's link (in case it must be pasted) and opens the Gateway Hub app. */
-    private fun goToHub() {
-        getSystemService(ClipboardManager::class.java)?.setPrimaryClip(ClipData.newPlainText("Nivel › Gateway Hub", McpMode.hubLink()))
+    /** «Modo MCP» in Ajustes: it is turned on, allowed on the phone and given tokens in Arka, so this opens Arka. */
+    private fun openArka() {
         val open = packageManager.getLaunchIntentForPackage("com.zirakusa.gatewayhub")
-        if (open != null) startActivity(open) else Toast.makeText(this, R.string.mcp_paste_in_hub, Toast.LENGTH_LONG).show()
+        if (open != null) startActivity(open) else Toast.makeText(this, R.string.mcp_no_arka, Toast.LENGTH_LONG).show()
     }
 }

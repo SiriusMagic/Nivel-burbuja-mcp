@@ -7,7 +7,6 @@ import com.zirakusa.nivel.data.SlopeUnit
 import com.zirakusa.nivel.data.Tilt
 import com.zirakusa.nivel.mcp.Access
 import com.zirakusa.nivel.mcp.HubLink
-import com.zirakusa.nivel.mcp.Kind
 import com.zirakusa.nivel.mcp.LevelData
 import com.zirakusa.nivel.mcp.McpHandler
 import com.zirakusa.nivel.mcp.Token
@@ -21,7 +20,7 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
-/** Nivel's MCP: tools list, good calls, bad arguments, unknown tool and no reading, wrong and paused tokens, hub link. */
+/** Nivel's MCP: tools list, good calls, bad arguments, unknown tool and no reading, wrong tokens, hub link. */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
 class McpTest {
@@ -35,9 +34,8 @@ class McpTest {
         override fun measurements() = saved
         override fun now() = 10_000L
     }
-    private val reader = Token("r", "Claude", "niv_" + "r".repeat(40), Access.READ, Kind.HUB, "Obra")
-    private val paused = Token("p", "Viejo", "niv_" + "p".repeat(40), Access.READ, paused = true)
-    private val handler = McpHandler({ listOf(reader, paused) }, data, "0.1.0")
+    private val reader = Token("niv_" + "r".repeat(40), Access.READ)
+    private val handler = McpHandler({ listOf(reader) }, data, "0.1.0")
 
     private fun rpc(token: Token, method: String, params: JSONObject = JSONObject()) = runBlocking {
         JSONObject(handler.handle("POST", "/mcp", mapOf("Authorization" to "Bearer ${token.secret}"), emptyMap(),
@@ -55,7 +53,7 @@ class McpTest {
         assertTrue((0 until tools.length()).all { tools.getJSONObject(it).getJSONObject("annotations").getBoolean("readOnlyHint") })
         val init = rpc(reader, "initialize")
         assertEquals("nivel", init.getJSONObject("serverInfo").getString("name"))
-        assertEquals("hub", init.getJSONObject("_meta").getJSONObject(McpHandler.TOKEN_META).getString("kind"))
+        assertEquals("redirect", init.getJSONObject("_meta").getJSONObject(McpHandler.TOKEN_META).getString("kind"))
     }
 
     @Test fun readsTheLevel() {
@@ -97,7 +95,7 @@ class McpTest {
 
     @Test fun wrongAndPausedTokensAndHubLink() = runBlocking {
         val body = """{"jsonrpc":"2.0","id":1,"method":"tools/list"}"""
-        assertEquals(401, handler.handle("POST", "/mcp", mapOf("Authorization" to "Bearer ${paused.secret}"), emptyMap(), body).status)
+        assertEquals(401, handler.handle("POST", "/mcp", mapOf("Authorization" to "Bearer wrong_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"), emptyMap(), body).status)
         assertEquals(401, handler.handle("POST", "/mcp", mapOf("Authorization" to "Bearer niv_wrong"), emptyMap(), body).status)
         assertEquals(401, handler.handle("POST", "/mcp", emptyMap(), emptyMap(), body).status)
         assertEquals(200, handler.handle("POST", "/mcp", emptyMap(), mapOf("token" to reader.secret), body).status)
@@ -105,25 +103,35 @@ class McpTest {
         assertTrue(Token.secret().startsWith("niv_"))
         assertEquals("NOT_SAME_DEVELOPER", HubLink.answer(false).getString("error"))
         assertEquals("REDIRECT_OFF", HubLink.answer(true).getString("error"))
-        // «Conectar todas» and Lucía's tools: only for the same developer, and tools only with «Redireccionar a Hub» on.
         assertEquals("NOT_SAME_DEVELOPER", HubLink.connect(false).getString("error"))
         assertEquals("NOT_SAME_DEVELOPER", HubLink.tool(false, "{}").getString("error"))
-        assertEquals("REDIRECT_OFF", HubLink.tool(true, "{}").getString("error"))
+        // Only the same developer (Arka) may connect, disconnect, read the status or run a tool.
+        listOf(HubLink.disconnect(false), HubLink.status(false)).forEach { assertEquals("NOT_SAME_DEVELOPER", it.getString("error")) }
     }
 
-    /** Lucía runs a tool on the phone through the same handler, only while «Redireccionar a Hub» is on. */
+    /** Lucía runs a tool on the phone through the same handler, with or without the public link; Arka turns that on and off. */
     @Test fun luciaRunsToolsOnThePhone() {
         val relay = com.zirakusa.nivel.mcp.McpMode.relayUrl
         com.zirakusa.nivel.mcp.McpMode.relayUrl = ""                                             // no relay in tests
         com.zirakusa.nivel.mcp.McpMode.load(org.robolectric.RuntimeEnvironment.getApplication())
-        com.zirakusa.nivel.mcp.McpMode.redirect(false)
-        assertEquals(null, com.zirakusa.nivel.mcp.McpMode.local("{}"))
-        HubLink.connect(true); assertTrue(com.zirakusa.nivel.mcp.McpMode.hubRedirect)                // «Conectar todas»
+        com.zirakusa.nivel.mcp.McpMode.turnRemote(false)
         val list = JSONObject(com.zirakusa.nivel.mcp.McpMode.local("""{"jsonrpc":"2.0","id":1,"method":"tools/list"}""")!!)
         assertTrue(list.getJSONObject("result").getJSONArray("tools").length() > 0)
         val viaProvider = JSONObject(HubLink.tool(true, """{"jsonrpc":"2.0","id":2,"method":"tools/list"}""").getString("response"))
         assertEquals(2, viaProvider.getInt("id"))
-        com.zirakusa.nivel.mcp.McpMode.redirect(false)
+        assertEquals("BAD_REQUEST", HubLink.tool(true, "").getString("error"))
+        assertEquals("NOT_SAME_DEVELOPER", HubLink.tool(false, "{}").getString("error"))
+        assertTrue(HubLink.status(true).containsKey("remote"))
+        HubLink.connect(true); assertTrue(com.zirakusa.nivel.mcp.McpMode.remote)                 // Arka › «Activar MCP»
+        assertFalse(HubLink.disconnect(true).getBoolean("remote")); assertFalse(com.zirakusa.nivel.mcp.McpMode.remote)
         com.zirakusa.nivel.mcp.McpMode.relayUrl = relay                                          // as the other tests expect
+    }
+
+    /** The hub's token from before Arka took over is kept, so the hub's link keeps working. */
+    @Test fun theOldHubTokenIsKept() {
+        val old = """[{"id":"a","secret":"${"l".repeat(44)}","kind":"llm"},{"id":"b","secret":"${"h".repeat(44)}","kind":"redirect"}]"""
+        assertEquals("h".repeat(44), com.zirakusa.nivel.mcp.Legacy.redirectSecret(old))
+        assertEquals(null, com.zirakusa.nivel.mcp.Legacy.redirectSecret("[]"))
+        assertEquals(null, com.zirakusa.nivel.mcp.Legacy.redirectSecret(""))
     }
 }

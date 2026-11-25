@@ -111,9 +111,7 @@ class ScreenshotsTest {
         state.tab = Tab.SETTINGS
         compose.onNodeWithText("Restablecer calibración").assertExists()
         shot("settings")
-        compose.onNodeWithText("Modo MCP").performScrollTo().performClick()
-        compose.onNodeWithText("Redireccionar a Hub").assertExists()
-        shot("mcp")
+        compose.onNodeWithText("Lo controla Arka", substring = true).performScrollTo().assertExists()
     }
 
     @Test fun lightAndBlackThemes() {
