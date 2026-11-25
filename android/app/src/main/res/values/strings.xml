@@ -104,10 +104,10 @@
     <string name="about">Acerca de</string>
     <string name="version">Versión %1$s</string>
     <string name="icon_title">Icono de la app</string>
-    <string name="icon_original">Original</string>
-    <string name="icon_light">Claro</string>
-    <string name="icon_gold">Dorado</string>
-    <string name="icon_blue">Azul</string>
-    <string name="icon_green">Verde</string>
+    <string name="icon_pixel">Pixelado</string>
+    <string name="icon_real">Realista</string>
+    <string name="icon_watercolor">Acuarela</string>
+    <string name="icon_neon">Neón</string>
+    <string name="icon_cartoon">Dibujo</string>
     <string name="icon_hint">Cambia el icono de la pantalla de inicio. Algunos lanzadores tardan unos segundos en mostrarlo.</string>
 </resources>

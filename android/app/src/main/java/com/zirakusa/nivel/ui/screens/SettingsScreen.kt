@@ -56,7 +56,7 @@ import com.zirakusa.nivel.ui.theme.LevelColors
                     Modifier.fillMaxWidth()) { state.changeUnit(SlopeUnit.entries[it]) }
             }
         }
-        IconCard(LevelColors.Card, LevelColors.Text, LevelColors.Muted, LevelColors.Accent, androidx.compose.ui.graphics.Color(0xFF0D1828))
+        IconCard(LevelColors.Card, LevelColors.Text, LevelColors.Muted, LevelColors.Accent)
         ThemeCard(state.themeMode, state.accent, state::changeTheme, state::changeAccent)
         Group {
             Item(stringResource(R.string.measurements), state.measurements.size.toString()) { state.page = Page.MEASUREMENTS }

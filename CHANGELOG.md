@@ -1,3 +1,9 @@
+# Nivel 0.2.0
+
+- **Iconos nuevos**: el nivel de burbuja en cinco estilos, **Pixelado** (el de fábrica), Realista, Acuarela, Neón y
+  Dibujo, en Ajustes › Icono de la app. Se quitan los anteriores (Original, Claro, Dorado, Azul y Verde); si tenías uno
+  elegido, pasa solo al nuevo que ocupa su lugar.
+
 # Nivel 0.1.1
 
 - **Conectar todas** (Gateway Hub 0.0.21): con un toque en el Hub se activa aquí «Redireccionar a Hub» y la app queda

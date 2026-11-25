@@ -1,8 +1,8 @@
 <resources>
-    <color name="launcher_background">#0D1828</color>
-    <!-- The other launcher icons (Ajustes › Icono de la app). -->
-    <color name="launcher_background_light">#F2F2F2</color>
-    <color name="launcher_background_gold">#F5C518</color>
-    <color name="launcher_background_blue">#1565C0</color>
-    <color name="launcher_background_green">#1B5E20</color>
+    <!-- Launcher icon backgrounds (Ajustes › Icono de la app). Pixelado is the default. -->
+    <color name="launcher_background_pixel">#1B2333</color>
+    <color name="launcher_background_real">#2A2D33</color>
+    <color name="launcher_background_watercolor">#F4ECDD</color>
+    <color name="launcher_background_neon">#070B16</color>
+    <color name="launcher_background_cartoon">#DCEBFF</color>
 </resources>
