@@ -67,7 +67,7 @@
     <string name="mcp_connecting">Conectando…</string>
     <string name="mcp_offline">Sin conexión</string>
     <string name="hub_link_permission">Vincular con Gateway Hub</string>
-    <string name="mcp_settings_hint">Lo controla Arka: activarlo, permitirlo en local y crear tokens.</string>
+    <string name="mcp_settings_hint">Configura el acceso local y la redirección a Hub.</string>
     <string name="mcp_status_off">Apagado</string>
     <string name="privacy">Política de privacidad</string>
     <string name="privacy_text">Nivel no tiene anuncios ni estadísticas. Tus ajustes y mediciones se guardan solo en este teléfono, fuera de las copias en la nube. La cámara solo se usa para dibujar el horizonte y no guarda imágenes. Solo si activas el Modo MCP, la IA que conectes con un token puede leer la inclinación, la calibración y tus mediciones a través del relay.</string>
@@ -80,5 +80,5 @@
     <string name="icon_neon">Neón</string>
     <string name="icon_cartoon">Dibujo</string>
     <string name="icon_hint">Cambia el icono de la pantalla de inicio. Algunos lanzadores tardan unos segundos en mostrarlo.</string>
-    <string name="mcp_no_arka">Instala Arka para activar el Modo MCP.</string>
+    <string name="mcp_no_arka">Instala Arka para administrar los enlaces del Hub.</string>
 </resources>

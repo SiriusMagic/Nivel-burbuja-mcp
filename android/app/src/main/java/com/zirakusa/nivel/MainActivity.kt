@@ -18,6 +18,7 @@ import androidx.core.net.toUri
 import androidx.core.view.WindowCompat
 import com.zirakusa.nivel.data.SharedValues
 import com.zirakusa.nivel.mcp.McpMode
+import com.zirakusa.nivel.mcp.showMcpOptions
 import com.zirakusa.nivel.ui.AppActions
 import com.zirakusa.nivel.ui.LevelState
 import com.zirakusa.nivel.ui.NivelApp
@@ -90,9 +91,5 @@ class MainActivity : ComponentActivity() {
 
     private fun toast(text: Int) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
-    /** «Modo MCP» in Ajustes: it is turned on, allowed on the phone and given tokens in Arka, so this opens Arka. */
-    private fun openArka() {
-        val open = packageManager.getLaunchIntentForPackage("com.zirakusa.gatewayhub")
-        if (open != null) startActivity(open) else Toast.makeText(this, R.string.mcp_no_arka, Toast.LENGTH_LONG).show()
-    }
+    private fun openArka() = showMcpOptions(this)
 }
